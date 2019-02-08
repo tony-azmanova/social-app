@@ -17,26 +17,33 @@ class WallService
     public function showResentFriendActivity($user)
     {
         $userFriends = User::getAllFriendsOfUser($user->id);
-        //if the user does not have any friends check to see if he has any posts
         if ($userFriends->isEmpty()) {
-            return Post::where('user_id', $user->user_id)->with('user')->latest()->paginate(10);
+            return $this->getLatestUserPosts($user);
         }
-        //if user do not have any friendship points show the posts of all his friends
-        $userPoints = $user->friendshipPoints()->get();
+
+        $userPoints = FriendshipPoints::where('user_id', $user->id)->orderBy('points', 'DESC')->get();
         if ($userPoints->isEmpty()) {
             foreach ($userFriends as $friend) {
-                $friendsPosts = Post::where('user_id', $friend->user_id)->with('user')->latest()->paginate(10);
+                $friendsPosts = $this->getLatestUserPosts($friend);
             }
             return $friendsPosts->sortByDesc('created_at');
         }
-        //if user has friendsip points show the post of the user friends with the high points
-        $userPoints= FriendshipPoints::where('user_id', $user->id)->orderBy('points', 'DESC')->get();
 
+       return $this->getLatestPostsByFriendshipPoints($user, $userPoints);
+    }
+
+    public function getLatestUserPosts($user)
+    {
+        return Post::where('user_id', $user->user_id)->with(['user','reactions', 'comments'])->latest()->paginate(10);
+    }
+
+    public function getLatestPostsByFriendshipPoints($user, $userPoints)
+    {
         foreach ($userPoints as $points) {
             $userPosts =
                 Post::where('user_id', $user->id)
                     ->orWhere('user_id', $points['friend_id'])
-                    ->with('user', 'comments')
+                    ->with(['user', 'reactions', 'comments'])
                     ->latest()
                     ->paginate(10);
         }

@@ -51,7 +51,6 @@ Route::post('/notifications', 'FriendsController@userNotifications')->middleware
 
 Route::post('/posts/{postId}/comment', 'CommentController@store')->middleware('auth');
 Route::post('/posts/react', 'ReactionController@create')->middleware('auth');
-Route::get('/posts/user/react', 'ReactionController@isUserReactedToPost')->middleware('auth');
 
 Route::post('/comments/react', 'ReactionController@create')->middleware('auth');
 Route::post('/comments/post/{postId}', 'PostController@postComment')->middleware('auth');

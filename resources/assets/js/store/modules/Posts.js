@@ -33,7 +33,7 @@ const actions = {
     setComments({ commit }, comments) {
         commit("SET_COMMENTS", comments);
     },
-    stateChanged({ commit }, payload) {
+    stateChanged({ commit, dispatch }, payload) {
         commit("SET_CURRENT_ELEMENT", payload.element);
         dispatch("likes/addReaction", { element: payload.element, response: payload.response }, { root: true });
     },

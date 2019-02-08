@@ -78,7 +78,7 @@ const actions = {
                 commit('SET_GALLERIES', response.data.data);
             },
             response => {
-                dispatch("infoMessages/setInfoMessageTemporary", false, { root: true });
+                dispatch("infoMessages/setInfoMessageTemporary", true, { root: true });
                 dispatch("infoMessages/setInfoMessages", [response.body.message], { root: true });
                 console.log("Wooops, Something Went Wrong!");
             });
@@ -88,7 +88,7 @@ const actions = {
                 commit('SET_USER_IMAGES', response.data.data);
             },
             response => {
-                dispatch("infoMessages/setInfoMessageTemporary", false, { root: true });
+                dispatch("infoMessages/setInfoMessageTemporary", true, { root: true });
                 dispatch("infoMessages/setInfoMessages", [response.body.message], { root: true });
                 console.log("Wooops, Something Went Wrong!");
             }

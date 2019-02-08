@@ -52,9 +52,9 @@ class WallController extends Controller
      */
     public function show($userId)
     {
-        $usersPosts = Post::where('user_id', $userId);
+        $usersPosts = Post::where('user_id', $userId)->with(['user', 'reactions'])->latest()->paginate(10);
 
-        if ($usersPosts->get()->isEmpty()) {
+        if ($usersPosts->isEmpty()) {
             return JsonService::jsonError(
                 'You do not have any posts yet!',
                 404
@@ -63,7 +63,7 @@ class WallController extends Controller
 
         return JsonService::jsonSuccess(
             'Returning all posts for user specific wall!',
-            PostResource::collection($usersPosts->with(['user', 'reactions'])->latest()->paginate(10))
+            PostResource::collection($usersPosts)
         );
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\User;
 use App\Services\Contracts\ImageServiceInterface;
+use \Image as InterventionImage;
 
 /**
  * Description of ImageService
@@ -17,6 +18,10 @@ class ImageService implements ImageServiceInterface
     private $allowedMimeTypes = ['image/jpeg','image/gif','image/png'];
 
     private $sizes = [200, 500, 800];
+
+    const NO_IMAGE_FOUND_PATH = 'files/images/default/no_image_found.png';
+    
+    const USER_DEFAULT_IMAGE_PATH = 'files/images/default/user_default.png';
 
     /**
      * Check if the image is of valid type
@@ -48,9 +53,9 @@ class ImageService implements ImageServiceInterface
     {
         $thumbnailsDirectory = 'public/'.$this->getFileDirectory($imagePath).'/thumbnails/';
         Storage::makeDirectory($thumbnailsDirectory);
-        
+
         foreach ($sizes as $size) {
-            \Image::make(storage_path('app/public/'.$imagePath))
+            InterventionImage::make(storage_path('app/public/'.$imagePath))
                 ->fit($size)
                 ->save(storage_path('app/'. $this->buildThumbnailPath($imagePath, $size)));
         }
@@ -77,8 +82,8 @@ class ImageService implements ImageServiceInterface
         $image = new \stdClass();
 
         if (!$file) {
-            $image->storagePath = 'files/images/default/user_default.png';
-            $image->thumbnail = $this->getThumbnailWithSize('files/images/default/user_default.png', $size);
+            $image->storagePath = self::USER_DEFAULT_IMAGE_PATH;
+            $image->thumbnail = $this->getThumbnailWithSize(self::USER_DEFAULT_IMAGE_PATH, $size);
           
             return $image;
         }
@@ -97,8 +102,8 @@ class ImageService implements ImageServiceInterface
      */
     public function getImage($imagePath)
     {
-        if (!Storage::exists($imagePath)) {
-            return 'storage/files/images/default/no_image_found.png';
+        if (!Storage::exists($this->buildImagePath($imagePath))) {
+            return self::NO_IMAGE_FOUND_PATH;
         }
         return $imagePath;
     }
@@ -114,7 +119,7 @@ class ImageService implements ImageServiceInterface
     }
 
     /**
-     * Get image in the thumbnails path with the name of the image
+     * Get the thumbnail path by given image path and size
      * 
      * @param type $imagePath
      * @param type $size
@@ -122,10 +127,16 @@ class ImageService implements ImageServiceInterface
      */
     public function getThumbnailWithSize($imagePath, $size)
     {
-        if (!Storage::exists($this->getPublicThumbnailPath($imagePath)) && (Storage::exists($imagePath)) ) {
-            $this->createThumbnails($imagePath, $this->sizes);
+        //$thumbnailPublicPath = $this->getPublicThumbnailPath($imagePath, $size);
+        $hasThumbnail = Storage::exists($this->buildThumbnailPath($imagePath, $size));
+        $hasImageSource = Storage::exists($this->buildImagePath($imagePath));
+
+        if (!$hasThumbnail && $hasImageSource ) {
+            return $this->createThumbnails($imagePath, $this->sizes);
         }
-        
+        if (!$hasThumbnail && !$hasImageSource) {
+            return $this->getPublicThumbnailPath(self::NO_IMAGE_FOUND_PATH);
+        }
         return $this->getPublicThumbnailPath($imagePath, $size);
     }
 
@@ -140,7 +151,6 @@ class ImageService implements ImageServiceInterface
             foreach ($this->sizes as $size) {
                 Storage::delete($this->buildThumbnailPath($imagePath, $size));
             }
-            
             return true;
         }
     }
@@ -152,11 +162,9 @@ class ImageService implements ImageServiceInterface
      */
     public function deleteImage($imagePath)
     {
-        if (Storage::exists($imagePath)) {
-            if ($this->deleteAllThumbnailsForImage($imagePath)) {
-                Storage::delete($imagePath);
-            }
-        }   
+        if ($this->buildImagePath($imagePath) && $this->deleteAllThumbnailsForImage($imagePath)) {
+            Storage::delete($this->buildImagePath($imagePath));
+        } 
     }
 
     public function buildThumbnailPath($imagePath, $size = 200)
@@ -166,6 +174,15 @@ class ImageService implements ImageServiceInterface
         $directory = $this->getFileDirectory($imagePath);
 
         return 'public/'.$directory.'/thumbnails/'.$name.'_'. $size.'.'.$extension;
+    }
+
+    public function buildImagePath($imagePath)
+    {
+        $name = File::name($imagePath);
+        $extension = File::extension($imagePath);
+        $directory = $this->getFileDirectory($imagePath);
+
+        return 'public/'.$directory.'/'.$name.'.'.$extension;
     }
 
     public function getPublicThumbnailPath($imagePath, $size = 200)

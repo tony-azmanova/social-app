@@ -60,15 +60,14 @@ export default {
           }
           ).then(
             response => {
-              console.log('image successfully uploadded');
-              this.$store.dispatch('users/setUserAvatar', response.data.data);
+              this.$store.dispatch("users/setUserAvatar", response.data.data);
               this.$store.dispatch("files/resetFileInput", true);
-              this.$store.dispatch('flashMessages/setSuccess', true);
+              this.$store.dispatch("flashMessages/setSuccess", response.data.message);
               this.classFadeOut = "animated fadeOutUp slower";
             },
             response => {
-              this.$store.dispatch('flashMessages/setErrors', response.data.errors);
-              console.log('Wooops, Something Went Wrong!', response.data.errors);
+              this.$store.dispatch("flashMessages/setErrors", response.data.errors);
+              console.log("Wooops, Something Went Wrong!", response.data.errors);
             }
           ); 
     },
