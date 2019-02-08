@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         bootstrap="vendor/autoload.php"
+         backupStaticAttributes="false"
+         processIsolation="false"
+           colors="true" 
+           convertErrorsToExceptions="true" 
+           convertNoticesToExceptions="true" 
+           convertWarningsToExceptions="true" 
+           stopOnError="false" 
+           stopOnFailure="false" 
+           stopOnIncomplete="false" 
+           stopOnSkipped="false" 
+           stopOnRisky="false" 
+           verbose="false">
+    <testsuites>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./app</directory>
+            <exclude>
+                <directory suffix=".php">./app/Http/Routes</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <!-- <logging>
+        <log type="coverage-html" target="tests/_reports/coverage" lowUpperBound="35" highLowerBound="70" />
+    </logging> -->
+    <php>
+        <env name="DB_CONNECTION" value="sqlite_testing"/>
+        <env name="APP_ENV" value="testing"/>
+        <env name="CACHE_DRIVER" value="array"/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="QUEUE_DRIVER" value="sync"/>
+    </php>
+</phpunit>
