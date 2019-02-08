@@ -104,8 +104,6 @@ class GalleryTest extends TestCase
      */
     public function user_can_see_galleries()
     {
-        //mock user that has a galleries
-        //assert that on get of galleries the json contains "Show all galleries!"
         $fakeGallery = $this->getFakeGallery();
         $fakeGalleryResults = $this->getFakeGallery();
 
@@ -178,8 +176,6 @@ class GalleryTest extends TestCase
      */
     public function user_can_see_all_images_that_he_has_uploaded()
     {
-        //mock that the user has some uploaded images
-        //assert that on get of galleries/new the json contains "Show all Images that the user has uploaded!"
         $fakeFile = $this->getFakeFile();
         $filesResults = $this->getFakeFiles();
 
@@ -210,9 +206,6 @@ class GalleryTest extends TestCase
      */
     public function user_sees_information_massage_if_he_has_not_uploaded_any_files()
     {
-        //mock that the user has no uploaded images
-        //assert that on get of galleries/new the json contains "You haven\'t uploaded any files yet. To create a gallery start by uploading some images."
-
         $fileModelFaker = Mockery::mock('overload:'.\App\File::class)->makePartial();
         $fileModelFaker
             ->shouldReceive('get')
@@ -229,6 +222,4 @@ class GalleryTest extends TestCase
         $expected = json_encode($this->jsonResponseErrorFaker('You haven\'t uploaded any files yet. To create a gallery start by uploading some images.', 404));
         $this->assertJsonStringEqualsJsonString($expected, $actual);
     }
-    
-    
 }

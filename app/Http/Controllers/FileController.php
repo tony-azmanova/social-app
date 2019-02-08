@@ -24,7 +24,6 @@ class FileController extends Controller
      */
     public function index()
     {
-        //show resent files
     }
 
     /**
@@ -44,7 +43,6 @@ class FileController extends Controller
             return JsonService::jsonError('Sorry! The file was not uploadded!');
         }
 
-        //move to different method
         $filePath = $file->store('/files/images', 'public');
         $this->imageService->createThumbnails($filePath, [200, 500, 800]);
         $fileId = File::create([
@@ -91,7 +89,7 @@ class FileController extends Controller
         $user->save();
 
         return JsonService::jsonSuccess(
-            'Users avatar was uploaded successfully!',
+            'User avatar was uploaded successfully!',
             $this->imageService->getInfoForImage(File::findOrFail($fileId))
         );
     }

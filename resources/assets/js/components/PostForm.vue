@@ -33,8 +33,6 @@ export default {
         })
         .then(
           response => {
-            console.log('Success', response.data.message); //REMOVE_ME
-            
             this.$store.dispatch("posts/setNewPost", response.data.data);
             this.$store.dispatch("flashMessages/setSuccess", response.data.message);
             this.postTitle = "";

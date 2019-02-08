@@ -49,8 +49,6 @@ class GalleryTest extends TestCase
      */
     public function user_can_see_galleries()
     {
-        //mock user that has a galleries
-        //assert that on get of galleries the json contains "Show all galleries!"
 
         $response = $this->call('GET', '/galleries');
         $response
@@ -74,15 +72,6 @@ class GalleryTest extends TestCase
             'file_id' => $file->id,
         ]);
         $fakedImages = new \stdClass();
-
-        //$fakedImages->storagePath = 
-        /*
-            $image->storagePath = $this->getImage($file->pathToFile);
-            $image->name = $file->originalName;
-            $image->info = $file;
-            $image->thumbnail = $this->getThumbnailWithSize($file->pathToFile, $size);
-        
-        */
         $imageService = Mockery::mock('overload:'.Illuminate\Support\Facades\Auth::class)->makePartial();
         $imageService
             ->shouldReceive('getMultipleImages')
@@ -91,8 +80,7 @@ class GalleryTest extends TestCase
             ->andReturn($fakedImages);
 
         $this->actingAs($this->validUser);
-        
-        
+
         $response = $this->call('GET', '/galleries/create');
         $response
             ->assertStatus(200)
@@ -100,8 +88,6 @@ class GalleryTest extends TestCase
                 'success' => true,
                 'message' => 'Show all Images that the user has uploaded!'
             ]);
-        //mock that the user has some uploaded images
-        //assert that on get of galleries/new the json contains "Show all Images that the user has uploaded!"
     }
 
     /**
@@ -110,10 +96,6 @@ class GalleryTest extends TestCase
      */
     public function user_can_create_new_gallery_with_valid_gallery_name()
     {
-        //mock the user 
-        //make request to /galleries/create
-        //assert that the response is "New Gallery was added successfully!', ['id' => $galleryId]"
-        //galleryName: name
         $this->actingAs($this->validUser);
         $galleryFake = ['galleryName' => 'testgalleryname'];
         $galleryModelFaker = Mockery::mock('overload:'.App\Gallery::class)->makePartial();
@@ -139,22 +121,10 @@ class GalleryTest extends TestCase
      */
     public function user_can_not_create_new_gallery_with_invalid_gallery_name()
     {
-        //@expectedException Illuminate\Validation\ValidationException
-        //mock the user 
-        //make request to /galleries/create
-        //assert that the response is "New Gallery was added successfully!', ['id' => $galleryId]"
-        //galleryName: name
         $this->actingAs($this->validUser);
         $galleryRequestParams = [
             'galleryName' => ''
         ];
-        // $mockGalleryRequest = Mockery::mock('overload:'.App\Http\Requests\StoreGallery::class)->makePartial();
-        // $mockGalleryRequest
-        //     ->shouldReceive('validated')
-        //     ->with($galleryFake)
-        //     ->once()
-        //     ->andReturn(false);
-        //$method, $uri, $parameters = [], $cookies = [], $files = [], $server = [], $content = null
         $response = $this->call('POST', '/galleries', $galleryRequestParams);
      
         $response->assertSessionHasErrors('galleryName');
@@ -162,6 +132,4 @@ class GalleryTest extends TestCase
             ->assertStatus(302)
             ->assertJsonValidationErrors('galleryName');
     }
-
-
 }

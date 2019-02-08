@@ -37,7 +37,7 @@ class AddPostRequest extends FormRequest
     public function messages()
     {
         return [
-            'postTitle.required' => 'A title is required',
+            'postTitle.required' => 'A title is required!',
             'postContent.required'  => 'Please write somethindg as post content...',
         ];
     }

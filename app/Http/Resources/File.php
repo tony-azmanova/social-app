@@ -17,9 +17,6 @@ class File extends JsonResource
     {
         return [
             'info' => $this->getImageInfo(),
-            // 'name' => $this->name,
-            // 'storagePath' => $this->storagePath,
-            // 'thumbnail' => (new ImageServiceInterface)->getThumbnailWithSize($this->pathToFile)
         ];
     }
 

@@ -37,7 +37,6 @@ class ReactionController extends Controller
             ->where('user_id', auth()->id())
             ->where('element_type', $reactableType)->get();
 
-        //Change to Use the JsonService
         return response()->json([
             'success' => true,
             'elementId' => $id,
@@ -54,32 +53,5 @@ class ReactionController extends Controller
            return event(new UserAddedReaction($elementOwner));
         }
        return event(new UserRemovedReaction($elementOwner));
-    }
-    
-    
-    public function isUserReactedToPost(Request $request)
-    {
-        $reactableModel = $this->reactionService->getModelForReactionType($request);
-        $user = \App\User::findOrFail(auth()->id());
-
-        $posts =  $this->wallService->showResentFriendActivity($user);
-        $postsWithLike = [];
-        foreach ($posts as $post) {
-            $postsWithLike[$post['id']][] = Reaction::isUserReactedToType($reactableModel, $post['id']);
-        }
-        
-        return JsonService::jsonSuccess('Returning all posts with likes for the user!', $postsWithLike);
-    }
-
-    public function show($elementId, $element)
-    {
-        $reactableModel = $this->reactionService->getReactionTypeByElementType($element, $elementId);
-        
-        $reactionCount = Post::findOrFail($id)->reactions()->count();
-        $result = [
-            'id' => $id,
-            'count' => $reactionCount
-        ];
-        return JsonService::jsonSuccess('Returning reactions to post!', $result);
     }
 }

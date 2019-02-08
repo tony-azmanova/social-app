@@ -38,7 +38,7 @@ class UserTest extends TestCase
     {
         $this->assertTrue(true);
     }
-    
+
     public function tearDown()
     {
         Mockery::getContainer()->mockery_close();
@@ -71,26 +71,6 @@ class UserTest extends TestCase
             ]);
     }
 
-    // /**
-    //  * @test
-    //  */
-    // public function user_can_like_post()
-    // {
-        //we have user
-//        $user = factory(\App\User::class)->create();
-//
-//        $this->actingAs($user);
-        //that sends json request to post/react
-//        $response = $this->withHeaders([
-//            'X-Header' => 'Value',
-//        ])->json('POST', '/post/react', ['postId' => '1']);
-//        //["success":true,"postId":"1","createdReaction":false]
-//        $data = json_decode($response->getBody(), true);
-//
-//        $this->assertArrayHasKey('createdReaction', $data);
-//        $this->assertArrayHasValue('true', $data);
-    // }
-
     /**
      * @test
      * @group integration
@@ -107,7 +87,6 @@ class UserTest extends TestCase
 
         $response = $this->call('POST', '/login', $user);
         $authFasade::attempt($user);
-
         
         $response
             ->assertStatus(422)
@@ -129,7 +108,7 @@ class UserTest extends TestCase
         $authFasade->shouldReceive('logout')->once();
 
         $this->actingAs($this->validUser);
-        
+
         $this->assertAuthenticated();
         $response = $this->call('POST','/logout');
         $authFasade::logout();
@@ -142,5 +121,4 @@ class UserTest extends TestCase
                 'message' => 'Logout success'
             ]);
     }
-    
 }
