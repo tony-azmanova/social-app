@@ -18,7 +18,7 @@ export default {
   },
   computed: {
     ...mapState({
-      allPosts: state => state.posts.all,
+      allPosts: state => state.posts.all.posts,
     }),
   },
 };

@@ -3,9 +3,8 @@
         <div class="card">
             <div class="card-header">Login</div>
             <div class="card-body">
-                <div class="alert alert-danger" v-if="error">
-                    <p>{{error}}</p>
-                </div>
+                <Errors></Errors>
+                <Success></Success>
                 <form autocomplete="off" v-on:submit.prevent="onSubmit">
                     <div class="form-group row">
                         <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
@@ -22,7 +21,6 @@
                     <div class="form-group row mb-0">
                         <div class="col-md-8 offset-md-4">
                             <button type="submit" class="btn btn-primary">Login</button>
-                            <a class="btn btn-link" href="">Forgot Your Password?</a>
                         </div>
                     </div>
                 </form>
@@ -37,8 +35,6 @@ export default {
     return {
       email: "",
       password: "",
-      error: "",
-      success: false
     };
   },
 
@@ -53,11 +49,12 @@ export default {
         .then(
           response => {
             this.$router.go("/semi-spa/walls");
-            this.error = "";
-            this.success = true;
+            this.$store.dispatch("flashMessages/setSuccess", response.data.message);
           },
           response => {
-            this.error = response.data.message;
+            this.$store.dispatch("flashMessages/setErrors", {
+              loginError: [response.data.message]
+            });
             console.log("Wooops, Something Went Wrong!");
           }
         );

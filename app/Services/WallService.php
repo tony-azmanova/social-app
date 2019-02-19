@@ -13,28 +13,33 @@ use App\FriendshipPoints;
  */
 class WallService
 {
+    const PAGINATION_ITEMS_FOR_PAGE = 10;
 
     public function showResentFriendActivity($user)
     {
         $userFriends = User::getAllFriendsOfUser($user->id);
         if ($userFriends->isEmpty()) {
-            return $this->getLatestUserPosts($user);
+            return $this->getLatestUserPosts($user->id);
         }
 
         $userPoints = FriendshipPoints::where('user_id', $user->id)->orderBy('points', 'DESC')->get();
-        if ($userPoints->isEmpty()) {
+        if ($userPoints->first()->points === 0) {
             foreach ($userFriends as $friend) {
-                $friendsPosts = $this->getLatestUserPosts($friend);
+                $friendsPosts = $this->getLatestUserPosts($friend->user_id);
             }
-            return $friendsPosts->sortByDesc('created_at');
+            $allUsersPosts = $this->getLatestUserPosts($user->id)->merge($friendsPosts);
+            return $allUsersPosts->sortByDesc('created_at');
         }
 
        return $this->getLatestPostsByFriendshipPoints($user, $userPoints);
     }
 
-    public function getLatestUserPosts($user)
+    public function getLatestUserPosts($userId)
     {
-        return Post::where('user_id', $user->user_id)->with(['user','reactions', 'comments'])->latest()->paginate(10);
+        return Post::where('user_id', $userId)
+                ->with(['user','reactions', 'comments'])
+                ->latest()
+                ->paginate(self::PAGINATION_ITEMS_FOR_PAGE);
     }
 
     public function getLatestPostsByFriendshipPoints($user, $userPoints)
@@ -45,8 +50,9 @@ class WallService
                     ->orWhere('user_id', $points['friend_id'])
                     ->with(['user', 'reactions', 'comments'])
                     ->latest()
-                    ->paginate(10);
+                    ->paginate(self::PAGINATION_ITEMS_FOR_PAGE);
         }
-        return $userPosts->sortByDesc('created_at');
+
+        return $userPosts;
     }
 }

@@ -5,10 +5,8 @@ const state = {
     temporary: true,
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_INFO_MESSAGES(state, infoMessages) {
         state.all = infoMessages;
@@ -21,20 +19,19 @@ const mutations = {
     }
 };
 
-// actions
 const actions = {
     setInfoMessages({ commit, dispatch }, infoMessage) {
-        commit('REMOVE_INFO_MESSAGES');
         commit('SET_INFO_MESSAGES', infoMessage);
         if (state.temporary) {
             dispatch('removeInfoMessages');
         }
     },
     removeInfoMessages({ commit }) {
-        if (Object.keys(state.all).length > 0) {
+        let hasErrors = Object.keys(state.all) ? Object.keys(state.all).length : 0;
+        if (hasErrors > 0) {
             setTimeout(() => {
-                commit('REMOVE_INFO_MESSAGES');
-            }, 5000);
+                commit('REMOVE_INFO_MESSAGES', {});
+            }, 3000);
         }
     },
     setInfoMessageTemporary({ commit }, isTemporary) {

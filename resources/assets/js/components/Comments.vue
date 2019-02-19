@@ -29,7 +29,7 @@ export default {
   },
   computed: {
     ...mapState({
-      comments: state => state.posts.comments
+      comments: state => state.posts.all.comments
     })
   },
 };

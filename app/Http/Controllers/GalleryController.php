@@ -71,7 +71,6 @@ class GalleryController extends Controller
      */
     public function showUploadedImages()
     {
-        //add pagination
         $userfiles = File::where('user_id', auth()->id())->get();
         if ($userfiles->isEmpty()) {
             return JsonService::jsonError(
@@ -119,10 +118,8 @@ class GalleryController extends Controller
         ])->id;
 
         return JsonService::jsonSuccess(
-            'New Gallery was added successfully!', [
-                'id' => $galleryId,
-                'userId' => auth()->id(),
-            ]
+            'New Gallery was added successfully!',
+            GalleryResource::make(Gallery::findOrFail($galleryId))
         );
     }
 

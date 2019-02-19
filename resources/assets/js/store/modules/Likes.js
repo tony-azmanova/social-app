@@ -2,23 +2,20 @@ const state = {
     all: [],
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
 
     ADD_LIKE(state, rootState) {
-        rootState.posts.currentElement.reactions++;
-        rootState.posts.currentElement.userHasReacted = true;
+        rootState.posts.all.currentElement.reactions++;
+        rootState.posts.all.currentElement.userHasReacted = true;
     },
     REMOVE_LIKE(state, rootState) {
-        rootState.posts.currentElement.reactions--;
-        rootState.posts.currentElement.userHasReacted = false;
+        rootState.posts.all.currentElement.reactions--;
+        rootState.posts.all.currentElement.userHasReacted = false;
     }
 };
 
-// actions
 const actions = {
     addReaction({ state, commit, rootState }, payload) {
         if (payload.response.body.createdReaction) {

@@ -1,34 +1,33 @@
 import Vue from "vue";
 
 const state = {
-    all: [],
-    currentElement: [],
-    comments: [],
+    all: {
+        posts: [],
+        currentElement: {},
+        comments: [],
+    },
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_POSTS(state, posts) {
-        state.all = posts;
+        state.all.posts = posts;
     },
     SET_COMMENTS(state, comments) {
-        state.comments = comments;
+        state.all.comments = comments;
     },
     SET_CURRENT_ELEMENT(state, element) {
-        state.currentElement = element;
+        state.all.currentElement = element;
     },
     SET_NEW_POST(state, post) {
-        state.all.push(post);
+        state.all.posts.unshift(post);
     },
     SET_NEW_COMMENT(state, comment) {
-        state.comments.push(comment);
+        state.all.comments.push(comment);
     },
 };
 
-// actions
 const actions = {
     setComments({ commit }, comments) {
         commit("SET_COMMENTS", comments);
@@ -45,7 +44,7 @@ const actions = {
                 commit("SET_POSTS", response.data.data);
             },
             response => {
-                commit("SET_POSTS", {});
+                commit("SET_POSTS", []);
                 dispatch("infoMessages/setInfoMessageTemporary", false, { root: true });
                 dispatch("infoMessages/setInfoMessages", [response.body.message], { root: true });
                 console.log("Wooops, Something Went Wrong!");
@@ -57,8 +56,8 @@ const actions = {
                 commit("SET_POSTS", response.data.data);
             },
             response => {
-                commit("SET_POSTS", {});
-                dispatch("infoMessages/setInfoMessageTemporary", false, { root: true });
+                commit("SET_POSTS", []);
+                dispatch("infoMessages/setInfoMessageTemporary", true, { root: true });
                 dispatch("infoMessages/setInfoMessages", [response.body.message], { root: true });
                 console.log("Wooops, Something Went Wrong!");
             }

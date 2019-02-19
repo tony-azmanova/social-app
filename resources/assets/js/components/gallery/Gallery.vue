@@ -36,9 +36,13 @@ export default {
       fingLatestImageInGallery: 'galleries/fingLatestImageInGallery',
     })
   },
-  created(){
+  beforeMount(){
     this.galleryImagesCount = this.getGalleryImagesCount(this.gallery);
     this.galleryLastImage = this.fingLatestImageInGallery(this.gallery);
   },
+  beforeUpdate(){
+    this.galleryImagesCount = this.getGalleryImagesCount(this.gallery);
+    this.galleryLastImage = this.fingLatestImageInGallery(this.gallery);
+  }
 };
 </script>

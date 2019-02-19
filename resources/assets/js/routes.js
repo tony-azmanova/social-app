@@ -35,7 +35,7 @@ export const routes = [{
         props: true
     },
     {
-        path: '/semi-spa/user-wall',
+        path: '/semi-spa/user-wall/:userId?',
         component: UserWall,
         name: 'UserWall',
         props: true

@@ -25,8 +25,8 @@ class FriendshipService
     {
         $status = Friend::where('recever_id', $receverId)
                 ->where('sender_id', auth()->id())
-                ->orWhere('sender_id', auth()->id())
-                ->where('recever_id', $receverId)
+                ->orWhere('recever_id', auth()->id())
+                ->where('sender_id', $receverId)
                 ->latest()
                 ->get()->first();
 
@@ -39,21 +39,21 @@ class FriendshipService
         
         if ($status['status'] === self::STATUS_PENDING) {
             return $friendshipStatus = [
-                'friendshipStatus'=> $status['status'],
+                'friendshipStatus'=> true,
                 'message' => 'You are waiting for this user to accsept your friend request!'
             ];
         }
 
         if ($status['status'] === self::STATUS_ACCEPTED) {
             return $friendshipStatus = [
-                'friendshipStatus'=> $status['status'],
+                'friendshipStatus'=> true,
                 'message' => 'You are friend with this user!'
             ];
         }
 
         if ($status['status'] === self::STATUS_CANCEL) {
             return $friendshipStatus = [
-                'friendshipStatus'=> $status['status'],
+                'friendshipStatus'=> false,
                 'message' => 'Sorry your friend request was canceled, but you can send another!'
             ];
         }

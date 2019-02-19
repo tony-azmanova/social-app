@@ -18,6 +18,7 @@ Route::get('/semi-spa/walls', 'HomeController@index')->name('semi-spa.home')->mi
 Route::get('/semi-spa/posts/{id}', 'HomeController@index')->middleware('auth');
 Route::get('/semi-spa/walls/{userId}', 'HomeController@index')->middleware('auth');
 Route::get('/semi-spa/user-wall', 'HomeController@index')->middleware('auth');
+Route::get('/semi-spa/user-wall/{userId}', 'HomeController@index')->middleware('auth');
 
 Route::get('/semi-spa/users/search','UserController@search')->middleware('auth');
 Route::get('/semi-spa/my-profile','HomeController@index')->middleware('auth');

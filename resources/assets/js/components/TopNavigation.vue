@@ -10,7 +10,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul v-if="authUserId" class="navbar-nav mr-auto">
-                        <router-link class="nav-link" :to="{ name: 'Wall', params: { mainWall: true }}">Wall</router-link>
+                        <router-link class="nav-link" :to="{ name: 'Wall', params: { userId: authUserId, mainWall: true }}">Wall</router-link>
                         <router-link class="nav-link" :to="{ name: 'UploadFiles'}">
                             <a>Upload file</a>
                         </router-link>

@@ -21,11 +21,8 @@ export default {
     };
   },
   computed: {
-    userHasLike: function() {
-      return store.state.posts.userHasLike;
-    },
     ...mapState({
-      posts: state => state.posts.all
+      posts: state => state.posts.all.posts
     })
   },
   created: function() {

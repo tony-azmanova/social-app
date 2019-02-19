@@ -1,5 +1,5 @@
 <template>
-    <div v-if="galleries.images" class="newGallery">
+    <div class="newGallery">
         <Errors></Errors>
         <Success></Success>
         <div class="countSelected" >Selected images : {{ selectedImagesCount }}</div>
@@ -44,8 +44,7 @@ export default {
     gallerySelector() {
       this.$store.dispatch("galleries/setSelectedGallery", this.selectGallery);
 
-      return (this.showElement =
-        this.selectGallery === this.addNewGallery ? !this.showElement : false);
+      return this.showElement = (this.selectGallery === this.addNewGallery) ? !this.showElement : false;
     },
     onAddNewGallery() {
       console.log("Addding New Gallery Name", this.galleryName);
@@ -55,11 +54,7 @@ export default {
         })
         .then(
           response => {
-            this.$store.dispatch("galleries/setNewGallery", {
-              name: this.galleryName,
-              id: response.data.data.id,
-              user_id: response.data.data.userId
-            });
+            this.$store.dispatch("galleries/setNewGallery", response.data.data);
 
             this.selectGallery = response.data.data.id;
             this.galleryName = "";
