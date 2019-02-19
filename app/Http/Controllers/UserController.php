@@ -26,7 +26,7 @@ class UserController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->get('searchTerm');
-        $users = UserResource::collection(User::SearchUsersBySearchTerm($searchTerm)->get());
+        $users = UserResource::collection(User::searchUsersBySearchTerm($searchTerm)->get());
         if ($users->isEmpty()) {
             return JsonService::jsonError(
                 'There is no users found with this name!',

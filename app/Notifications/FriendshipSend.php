@@ -13,7 +13,6 @@ class FriendshipSend extends Notification
     use Queueable;
 
     protected $sender;
-    //protected $recever;
 
     /**
      * Create a new notification instance.
@@ -23,7 +22,6 @@ class FriendshipSend extends Notification
     public function __construct(User $sender)
     {
         $this->sender = $sender;
-        //$this->recever = $recever;
     }
 
     /**
@@ -46,11 +44,11 @@ class FriendshipSend extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line($this->sender->getFormatedFullNameAttribute().' send you a friend request!')
+                    ->line($this->sender->formated_full_name .' send you a friend request!')
                     ->action('See more', url('/semi-spa/notifications'))
                     ->line('Thank you for using our application!');
     }
-    
+
     /**
      * Get the array representation of the notification.
      *
@@ -59,7 +57,7 @@ class FriendshipSend extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => $this->sender->getFormatedFullNameAttribute(). ' send you a friend request!',
+            'message' => $this->sender->formated_full_name . ' send you a friend request!',
             'urlToVisit' => url('/semi-spa/notifications'),
             'sender_id' => $this->sender->id,
         ];
