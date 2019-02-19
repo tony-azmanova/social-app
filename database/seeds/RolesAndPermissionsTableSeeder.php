@@ -1,16 +1,17 @@
 <?php
+
+use App\User;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\PermissionRegistrar;
 
 class RolesAndPermissionsTableSeeder extends Seeder
 {
     public function run()
     {
-        // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+        app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
         Permission::create(['guard_name' => 'admin', 'name' => 'edit all posts']);
         Permission::create(['guard_name' => 'admin', 'name' => 'edit all users']);
         Permission::create(['guard_name' => 'admin', 'name' => 'edit all comments']);
@@ -21,23 +22,16 @@ class RolesAndPermissionsTableSeeder extends Seeder
         Permission::create(['guard_name' => 'web', 'name' => 'edit own comments']);
         Permission::create(['guard_name' => 'web', 'name' => 'edit profile']);
 
+        $role = Role::create(['name' => 'admin'])
+            ->givePermissionTo(['edit all users', 'edit all comments']);
 
-        // create roles and assign created permissions
-
-        // this can be done as separate statements
-        $role = Role::create(['name' => 'admin']);
-        //$role->givePermissionTo()
-        $role->givePermissionTo(['edit all users', 'edit all comments']);
-
-        // or may be done by chaining
         $role = Role::create(['name' => 'user'])
             ->givePermissionTo(['edit own posts', 'edit own comments', 'edit profile']);
 
-        $role = Role::create(['name' => 'moderator']);
-        $role->givePermissionTo(['edit all posts', 'edit all comments']);
-        //$role->givePermissionTo(Permission::all());
-        
-        $users = App\User::all();
+        $role = Role::create(['name' => 'moderator'])
+            ->givePermissionTo(['edit all posts', 'edit all comments']);
+
+        $users = User::all();
         foreach ($users as $user) {
             $user->assignRole('user');
         }

@@ -4,10 +4,8 @@ const state = {
     all: {}
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_FRIENDS(state, friends) {
         state.all = friends;
@@ -17,7 +15,6 @@ const mutations = {
     },
 };
 
-// actions
 const actions = {
     fetchFriends({ commit, dispatch }) {
         Vue.http.get("/friends")

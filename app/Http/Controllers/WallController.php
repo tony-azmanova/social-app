@@ -38,7 +38,7 @@ class WallController extends Controller
                 404
             );
         }
-        
+
         return JsonService::jsonSuccess(
             'Returning all posts for current auth user!',
             PostResource::collection($posts)

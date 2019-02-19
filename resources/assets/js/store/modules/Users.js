@@ -7,14 +7,12 @@ const state = {
     authUserId: '',
 };
 
-// getters
 const getters = {
     isCurrentUser: (state) => (userId) => {
         return (state.authUserId === userId);
     },
 };
 
-// mutations
 const mutations = {
     SET_AUTH_USER_ID(state, userId) {
         state.authUserId = userId;
@@ -27,7 +25,6 @@ const mutations = {
     },
 };
 
-// actions
 const actions = {
     setAuthUserId({ commit, dispatch }, userId) {
         commit('SET_AUTH_USER_ID', userId);

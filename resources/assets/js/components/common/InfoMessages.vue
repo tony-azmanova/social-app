@@ -1,8 +1,8 @@
 <template>
     <div class="infoMessage">
         <div v-for="infoMessage in infoMessages" :key="infoMessage.id" class="alert alert-info" role="alert">
-            <strong> {{ infoMessage }} </strong>
-        </div> 
+            {{ infoMessage }}
+        </div>
     </div>
 </template>
 <script>
@@ -13,7 +13,7 @@ export default {
   computed: {
     ...mapState({
       infoMessages: state => state.infoMessages.all
-    })
+    }),  
   }
 };
 </script>

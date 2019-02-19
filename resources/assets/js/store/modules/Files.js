@@ -4,10 +4,8 @@ const state = {
     resetFileInput: false,
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_FILES(state, files) {
         state.all = files;
@@ -17,7 +15,6 @@ const mutations = {
     }
 };
 
-// actions
 const actions = {
     setFiles({ commit }, files) {
         commit('SET_FILES', files);

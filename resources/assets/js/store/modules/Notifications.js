@@ -4,10 +4,8 @@ const state = {
     all: {}
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_NOTIFICATIONS(state, notifications) {
         state.all = notifications;
@@ -17,7 +15,6 @@ const mutations = {
     },
 };
 
-// actions
 const actions = {
     setNotifications({ commit, dispatch }) {
         Vue.http.get("/notifications")

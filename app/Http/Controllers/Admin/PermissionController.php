@@ -25,18 +25,9 @@ class PermissionController extends Controller
         'edit profile',
     ];
     
-    
-    public function index()
-    {
-        $this->addAllroles();
-        $userAdmin = User::find(1);
-        $userAdmin->assignRole('admin');
-        $user = User::find(2);
-        $user->assignRole('user');
-        $userAdmin->permissions;
-        $user->role;
-    }
-    
+    /**
+     * 
+     */
     public function creteRole($permisshions, $guard, $name)
     {
         $role = Role::create(['guard_name' => $guard,'name' => $name]);

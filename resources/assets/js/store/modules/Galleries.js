@@ -11,7 +11,6 @@ const state = {
 
 const NO_IMAGE_FOUND_PATH = '/storage/files/images/default/no_image_found.png';
 
-// getters
 const getters = {
     filterOnlyUniqueIds: (state) => {
         return _.uniq(state.selectedImages, 'id');
@@ -33,7 +32,6 @@ const getters = {
     },
 };
 
-// mutations
 const mutations = {
     SET_GALLERIES(state, galleries) {
         state.all = galleries;
@@ -54,9 +52,6 @@ const mutations = {
         let index = state.images.map(image => image.info.id).indexOf(imageId);
         state.images.splice(index, 1);
     },
-    ADD_IMAGES_TO_GALLERY(state, gallryId) {
-        state.all.images.push(gallryId);
-    },
     CLEAR_SELECTED_IMAGES(state) {
         state.selectedImages = [];
     },
@@ -68,7 +63,6 @@ const mutations = {
     },
 };
 
-// actions
 const actions = {
     setNewGallery({ commit }, gallery) {
         commit('SET_NEW_GALLERY', gallery);
@@ -112,7 +106,7 @@ const actions = {
     },
     setCurrentGallery({ commit }, gallery) {
         commit('SET_CURRENT_GALLERY', gallery);
-    },
+    }
 };
 
 export default {

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Search></Search>
+        <Search v-if="mainWall && isCurrentUser && !friendshipStatus && userId"></Search>
         <div v-if="loading" style="font-size: 16pt; color: #ff0000; ">Loading...</div>
         <Errors></Errors>
         <Success></Success>
@@ -64,16 +64,12 @@ export default {
   },
   beforeUpdate() {
     this.loading = false;
-    if(this.mainWall) {
-      return this.$store.dispatch("posts/fetchPostsMainWall");
-    }
   },
   methods: {
     checkFriedshipStatus(id){
       this.$http
         .get("/friends/status/" + id).then(
           response => {
-            this.$store.dispatch("infoMessages/setInfoMessageTemporary", true);
             this.$store.dispatch("infoMessages/setInfoMessages", [response.body.data.message]);
             this.friendshipStatus = response.body.data.friendshipStatus;
             this.loading = false;

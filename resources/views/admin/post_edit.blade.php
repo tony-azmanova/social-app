@@ -4,7 +4,6 @@
 <div class="container">
     @csrf
     <h3>Welcome to the admin area of social.app</h3>
-    @include('common/flash_messages')
     <div class="row justify-content-center">
         <div class="col-md-7">
             <div class="card">

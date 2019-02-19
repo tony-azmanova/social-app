@@ -51,7 +51,6 @@ class UserTest extends TestCase
     public function user_can_login_with_valid_ctedentials()
     {
         $user = ['email' => 'test@test.com','password' => 'test123'];
-        //$this->assertDatabaseHas('users', ['email' => 'test@test.com']);
 
         $authFasade = Mockery::mock('overload:'.Illuminate\Support\Facades\Auth::class)->makePartial();
 

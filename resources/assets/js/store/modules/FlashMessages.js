@@ -12,10 +12,8 @@ const state = {
     successStatus: false,
 };
 
-// getters
 const getters = {};
 
-// mutations
 const mutations = {
     SET_ERRORS(state, errors) {
         state.all.errors = errors;
@@ -37,7 +35,6 @@ const mutations = {
     },
 };
 
-// actions
 const actions = {
     setErrors({ commit, dispatch }, errors) {
         commit('SET_ERRORS', errors);
