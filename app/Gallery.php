@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Image;
 use Illuminate\Database\Eloquent\Model;
 
 class Gallery extends Model
@@ -19,7 +20,6 @@ class Gallery extends Model
      */
     public function images()
     {
-        return $this->hasMany(\App\Image::class);
+        return $this->hasMany(Image::class);
     }
- 
 }

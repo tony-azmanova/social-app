@@ -1,5 +1,6 @@
 <?php
 
+use App\File;
 use Illuminate\Database\Seeder;
 
 class FilesTableSeeder extends Seeder
@@ -11,6 +12,6 @@ class FilesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\File::class, 3)->create();
+        factory(File::class, 3)->create();
     }
 }

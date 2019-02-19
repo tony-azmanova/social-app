@@ -1,5 +1,6 @@
 <?php
 
+use App\Reaction;
 use Illuminate\Database\Seeder;
 
 class ReactionsTableSeeder extends Seeder
@@ -11,6 +12,6 @@ class ReactionsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Reaction::class, 30)->create();
+        factory(Reaction::class, 30)->create();
     }
 }

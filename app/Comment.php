@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\User;
+use App\Reaction;
 use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
@@ -30,7 +32,7 @@ class Comment extends Model
      */
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(User::class);
     }
     
     /**
@@ -38,7 +40,7 @@ class Comment extends Model
      */
     public function reactions()
     {
-        return $this->morphMany(\App\Reaction::class, 'element');
+        return $this->morphMany(Reaction::class, 'element');
     }
     
 }

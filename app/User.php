@@ -2,13 +2,16 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Spatie\Permission\Traits\HasRoles;
-use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 use App\User;
 use App\File;
+use App\Post;
+use App\Comment;
+use Carbon\Carbon;
+use App\FriendshipPoints;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -36,33 +39,33 @@ class User extends Authenticatable
     protected $with = [
         'avatar'
     ];
-     
+
     /**
      * Get the comments for the blog post.
      */
     public function posts()
     {
-        return $this->hasMany(\App\Post::class);
+        return $this->hasMany(Post::class);
     }
 
     public function avatar()
     {
         return $this->hasOne(File::class, 'id', 'avatar_file_id');
     }
-    
+
     /**
      * Get the comments for the blog post.
      */
     public function comments()
     {
-        return $this->hasMany(\App\Comment::class);
+        return $this->hasMany(Comment::class);
     }
-    
+
     public function friendshipPoints()
     {
-        return $this->hasMany(\App\FriendshipPoints::class);
+        return $this->hasMany(FriendshipPoints::class);
     }
-    
+
     public function friends()
     {
         return $this->belongsToMany(
@@ -72,7 +75,7 @@ class User extends Authenticatable
             'friend_id'
         )->withTimestamps();
     }
-    
+
     public static function getAllFriendsOfUser($userId)
     {
         $userFriends = DB::table('users')->select(['users.*', 'user_friends.created_at as friendship_created_at'])
@@ -99,7 +102,6 @@ class User extends Authenticatable
     {
         return $this->posts()->count();
     }
-    
     
     public function getFilesCountAttribute()
     {
@@ -138,7 +140,5 @@ class User extends Authenticatable
             });
         }
         return $query;
-        // $users = User::where('first_name', 'LIKE', '%' . $searchTerm . '%')->get();
-        // return $users;
     }
 }

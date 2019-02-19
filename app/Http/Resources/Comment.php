@@ -2,10 +2,11 @@
 
 namespace App\Http\Resources;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use App\Comment as CommentModel;
 use App\Reaction;
 use Carbon\Carbon;
 use App\Http\Resources\User;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class Comment extends JsonResource
 {
@@ -23,7 +24,7 @@ class Comment extends JsonResource
             'body' => $this->body,
             'user' => new User($this->user),
             'reactions' => $this->reactions_count,
-            'userHasReacted' => Reaction::isUserReactedToType(\App\Comment::class, $this->id),
+            'userHasReacted' => Reaction::isUserReactedToType(CommentModel::class, $this->id),
             'created_at' => Carbon::parse($this->created_at)->toDayDateTimeString(),
         ];
     }

@@ -2,11 +2,12 @@
 
 namespace App;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -15,12 +16,12 @@ class File extends Model
     protected $fillable = [
         'originalName', 'pathToFile','mimeType','user_id'
     ];
-    
+
     /**
      * Get the user that owns the file.
      */
     public function user()
     {
-        return $this->belongsTo(\App\User::class);
+        return $this->belongsTo(User::class);
     }
 }

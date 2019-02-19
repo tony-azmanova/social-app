@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 use App\User;
 use App\Services\Contracts\ImageServiceInterface;
-use \Image as InterventionImage;
+use InterventionImage;
 
 /**
  * Description of ImageService
@@ -127,7 +127,6 @@ class ImageService implements ImageServiceInterface
      */
     public function getThumbnailWithSize($imagePath, $size)
     {
-        //$thumbnailPublicPath = $this->getPublicThumbnailPath($imagePath, $size);
         $hasThumbnail = Storage::exists($this->buildThumbnailPath($imagePath, $size));
         $hasImageSource = Storage::exists($this->buildImagePath($imagePath));
 
